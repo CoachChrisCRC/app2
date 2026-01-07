@@ -23,7 +23,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Rock+Salt&display=swap');
         :root { --olive: #808a5c; --bg: #121412; }
         
         body { 
@@ -37,6 +37,10 @@
             justify-content: center; 
             min-height: 100svh; 
             transition: background-color 0.1s linear, color 0.1s linear;
+        }
+
+        .rock-salt {
+            font-family: 'Rock Salt', cursive;
         }
 
         /* Splash Screen Styles */
@@ -104,22 +108,43 @@
         @keyframes move-right { 0% { stroke-dashoffset: 120; } 100% { stroke-dashoffset: -120; } }
 
         /* QR Code Centering */
+        #qrcode-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+        }
         #qrcode {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        #qrcode img {
+        #qrcode canvas, #qrcode img {
             border: 4px solid #fff;
             border-radius: 12px;
             padding: 8px;
             background: #fff;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
-
-        #icon-container {
-            border-color: rgba(0, 0, 0, 1);
-            border-width: 4px;
+        .qr-logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: white;
+            padding: 4px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .qr-logo-overlay img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
         }
 
         /* Install Banner Style */
@@ -190,6 +215,16 @@
         #qr-modal.active .modal-content {
             transform: scale(1);
         }
+
+        /* Avatar Container Styling */
+        .avatar-ring {
+            position: relative;
+            padding: 4px;
+            background: white;
+            border-radius: 9999px;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+            border: 1px solid #f4f4f5;
+        }
     </style>
 </head>
 <body>
@@ -218,7 +253,12 @@
     <!-- QR Modal -->
     <div id="qr-modal">
         <div class="modal-content text-center">
-            <div id="qrcode" class="mb-8"></div>
+            <div id="qrcode-wrapper" class="mb-8">
+                <div id="qrcode"></div>
+                <div class="qr-logo-overlay">
+                    <img src="https://raw.githubusercontent.com/CoachChrisCRC/app/df3580c5a17d646dc6813a283f7e85e269fece8e/CoachChrisCRC-AppIcon.png" alt="Logo">
+                </div>
+            </div>
             <h2 class="text-black font-black text-sm uppercase tracking-[0.2em] mb-3">Coach Chris CRC</h2>
             <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.15em] leading-relaxed mb-8">
                 Scan QR Code
@@ -231,29 +271,53 @@
 
     <!-- Main Content -->
     <div class="flex flex-col items-center text-center p-6 w-full max-sm:max-w-xs py-10">
-        <div id="main-icon" class="mb-8 transition-all duration-700 scale-[0.7] -translate-y-[20px] opacity-0">
-            <div id="icon-container" class="relative flex items-center justify-center bg-zinc-400/10 rounded-full w-28 h-28 border shadow-[0_0_40px_rgba(128,138,92,0.1)]">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#808a5c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M0 12h2l1.5-4 1.5 8 2-14 2.5 20 2-10 2 4h10.5" opacity="0.1"></path>
-                    <path d="M0 12h2l1.5-4 1.5 8 2-14 2.5 20 2-10 2 4h10.5" class="heartrate-path"></path>
-                </svg>
+        <!-- Avatar & Profile Section -->
+        <div id="profile-header" class="mb-6 opacity-0 transition-all duration-700 -translate-y-4">
+            <div class="flex flex-col items-center">
+                <div class="avatar-ring mb-8">
+                    <img src="https://raw.githubusercontent.com/CoachChrisCRC/app/df3580c5a17d646dc6813a283f7e85e269fece8e/CoachChrisCRC-AppIcon.png" alt="Coach Chris" class="w-40 h-40 rounded-full object-cover">
+                </div>
+                
+                <h2 class="rock-salt font-bold text-2xl text-zinc-800 uppercase tracking-tight mb-4">COACH CHRIS</h2>
+                <h3 class="text-black font-[900] text-3xl uppercase tracking-tighter mb-1">Chris Hedley</h3>
+                <p class="text-zinc-500 text-[12px] font-bold uppercase tracking-widest mb-4">Online Coach & PT</p>
+                
+                <div class="flex flex-col gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-5 italic">
+                    <span>Circular Roots Coaching</span>
+                    <span>TRAIN UNCNVNTNL</span>
+                </div>
+                
+                <p class="text-[#808a5c] text-[11px] font-[900] uppercase tracking-[0.25em]">
+                    #FITTER #STRONGER #BETTER
+                </p>
             </div>
         </div>
 
-        <div id="branding" class="mb-10 opacity-0 transition-opacity duration-700">
-            <h1 class="text-3xl font-black uppercase tracking-tighter mb-2">
-                Coach Chris <span class="text-[#808a5c]">CRC</span>
-            </h1>
-            <p id="sub-label" class="text-black text-[9px] uppercase tracking-[0.4em] font-bold">FITTER. STRONGER. BETTER.</p>
-        </div>
-
-        <div id="dashboard-ui" class="flex w-full flex-col items-center opacity-0 transform translate-y-4 transition-all duration-700">
-            <div class="flex items-center gap-3 w-full">
-                <button id="skip-btn" class="flex-[4] bg-zinc-800 text-zinc-300 py-5 rounded-2xl font-black text-[10px] tracking-[0.1em] uppercase hover:bg-zinc-700 active:scale-95 transition-all">
-                    Continue with Browser
-                </button>
-                <button id="open-qr" class="flex-1 bg-zinc-100 text-zinc-800 p-5 rounded-2xl flex items-center justify-center hover:bg-zinc-200 active:scale-95 transition-all">
+        <!-- Dashboard UI -->
+        <div id="dashboard-ui" class="flex w-full flex-col items-center opacity-0 transform translate-y-4 transition-all duration-700 space-y-4">
+            <!-- QR Button Area -->
+            <div class="flex justify-center w-full mb-2">
+                <button id="open-qr" class="w-1/4 bg-zinc-100 text-zinc-800 p-5 rounded-2xl flex items-center justify-center hover:bg-zinc-200 active:scale-95 transition-all">
                     <i data-lucide="qr-code" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Additional Navigation Buttons -->
+            <div class="w-full space-y-3">
+                <button class="w-full border-2 border-zinc-100 bg-white text-zinc-800 py-4 rounded-2xl font-black text-[10px] tracking-[0.15em] uppercase hover:bg-zinc-50 active:scale-[0.98] transition-all">
+                    Free Fitness Tools
+                </button>
+                <button class="w-full border-2 border-zinc-100 bg-white text-zinc-800 py-4 rounded-2xl font-black text-[10px] tracking-[0.15em] uppercase hover:bg-zinc-50 active:scale-[0.98] transition-all">
+                    Find Your Path: Take the Quiz
+                </button>
+                <button class="w-full border-2 border-zinc-100 bg-white text-zinc-800 py-4 rounded-2xl font-black text-[10px] tracking-[0.15em] uppercase hover:bg-zinc-50 active:scale-[0.98] transition-all">
+                    Join the Fitter Stronger Better Program
+                </button>
+                <button class="w-full border-2 border-zinc-100 bg-white text-zinc-800 py-4 rounded-2xl font-black text-[10px] tracking-[0.15em] uppercase hover:bg-zinc-50 active:scale-[0.98] transition-all">
+                    Apply for Online Coaching
+                </button>
+                <button class="w-full border-2 border-zinc-100 bg-white text-zinc-800 py-4 rounded-2xl font-black text-[10px] tracking-[0.15em] uppercase hover:bg-zinc-50 active:scale-[0.98] transition-all">
+                    Buy me a Coffee
                 </button>
             </div>
         </div>
@@ -265,10 +329,8 @@
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
 
         const splash = document.getElementById('splash-screen');
-        const mainIcon = document.getElementById('main-icon');
-        const branding = document.getElementById('branding');
+        const profileHeader = document.getElementById('profile-header');
         const ui = document.getElementById('dashboard-ui');
-        const skipBtn = document.getElementById('skip-btn');
         const installBanner = document.getElementById('install-banner');
         const installActionBtn = document.getElementById('install-action-btn');
         const qrModal = document.getElementById('qr-modal');
@@ -278,16 +340,13 @@
         function revealDashboard() {
             splash.classList.add('fade-out');
             setTimeout(() => {
-                mainIcon.classList.remove('scale-[0.7]', '-translate-y-[20px]', 'opacity-0');
-                mainIcon.classList.add('opacity-50');
-                branding.classList.remove('opacity-0');
+                profileHeader.classList.remove('opacity-0', '-translate-y-4');
                 ui.classList.remove('opacity-0', 'translate-y-4');
             }, 200);
         }
 
         window.addEventListener('load', () => {
             if (isStandalone) {
-                skipBtn.innerText = "Continue";
                 setTimeout(() => {
                     window.location.href = EXTERNAL_URL;
                 }, 1000);
@@ -345,10 +404,6 @@
 
         // UI Logic
         lucide.createIcons();
-        
-        skipBtn.addEventListener('click', () => {
-            window.location.href = EXTERNAL_URL;
-        });
 
         openQrBtn.addEventListener('click', () => {
             qrModal.classList.add('active');
@@ -365,8 +420,8 @@
         const qrContainer = document.getElementById("qrcode");
         new QRCode(qrContainer, {
             text: window.location.href,
-            width: 180,
-            height: 180,
+            width: 240,
+            height: 240,
             colorDark : "#000000",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.H
