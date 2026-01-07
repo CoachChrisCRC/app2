@@ -367,19 +367,8 @@
         }
 
         window.addEventListener('load', () => {
-            if (isStandalone) {
-                setTimeout(() => {
-                    window.location.href = EXTERNAL_URL;
-                }, 1000);
-
-                window.addEventListener('focus', () => {
-                    if (!splash.classList.contains('fade-out')) {
-                        revealDashboard();
-                    }
-                }, { once: true });
-            } else {
-                setTimeout(revealDashboard, 1000);
-            }
+            // Removed auto-loading of external URL in standalone mode
+            setTimeout(revealDashboard, 1000);
         });
 
         if ('serviceWorker' in navigator) {
